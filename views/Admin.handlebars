@@ -1,0 +1,57 @@
+<h1>Congreso Artes</h1>
+
+<div class="py-4">
+  <h2>Administración</h2>
+  <hr class="w-50" />
+
+  <table class="table w-50 m-auto">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Años de experiencia</th>
+        <th scope="col">Especialidad</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+  {{#each lista}}
+      <tr>
+        <th scope="row">{{@index}}</th>
+        <td>
+          <div><img src="/perfiles/{{this.foto}}" alt="" width="80" height="60"></div>
+        </td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.anos_experiencia}}</td>
+        <td>{{this.especialidad}}</td>
+        <td><input type="checkbox" {{#if this.estado}} checked {{/if}} onclick="changeStatus({{this.id}}, this)">
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  
+      <a href="/registro">Registrarme</a> |
+      <a href="/">Lista participantes</a> 
+</div>
+
+<script>
+
+  const changeStatus = async (id, e) => {    
+    
+    const estado = e.checked
+    //console.log(estado)
+    try{
+     await axios.put("/participantesAdmin", { id, estado})
+    alert(estado ? 'Perfil de usuario aprobado' : 'Perfil de usuario en revisión')
+    }
+    catch({ response }){
+      const { data } = response
+      const {error } = data
+      alert (error);
+    }      
+  }   
+</script>
+

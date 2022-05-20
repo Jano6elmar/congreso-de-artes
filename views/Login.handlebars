@@ -1,0 +1,54 @@
+
+    <h1>Congreso Artes</h1>
+
+    <div class="py-5">
+      <h2>Iniciar Sesión</h2>
+      <hr class="w-50" />
+
+      <form onsubmit="event.preventDefault();">
+        <div class="form-group">
+          <div class="form-group">
+            <label>Email</label>
+            <input id="email" class="form-control w-50 m-auto" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" class="form-control w-50 m-auto" />
+          </div>
+        </div>
+        <button onclick="verificacion()" class="btn btn-success mb-3">Ingresar</button>
+        <p>¿Aún no tienes cuenta? <a href="/registro">Regístrate</a></p>
+      </form>
+    </div>
+    
+      <a href="/">Lista participantes</a>     
+<script>
+
+  const verificacion = async () => {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    const payload = { email, password }
+    //console.log(email, password)
+    if (email === '' || password === '' ){
+      alert("los campos son obligatorios")
+    }else{
+      try{
+        const { data : token } = await axios.post('/verify', payload)      
+        alert(`Autenticación y autorización existosa!`)  
+        window.location.href = `/datos?token=${token}`
+         //localStorage.setItem('jwt-token', token)
+      //return token
+    }catch ({ response }) {
+      //console.log(response)
+      const {data} = response
+      const {error} = data
+      alert(error)
+    }
+    
+     
+    }
+    
+  }
+
+</script>
+  

@@ -1,0 +1,117 @@
+
+
+    <h1>Congreso Artes</h1>
+
+    <div class="py-4">
+      <h2>Datos del perfil</h2>
+      <hr class="w-50" />
+
+      <form onsubmit="event.preventDefault();">
+        <div class="form-group row w-50 m-auto">
+          <div class="form-group col-12 col-sm-6">
+            <label>Email</label>
+            {{!-- {{#each }} --}}
+            <input
+              class="form-control m-auto"
+              disabled
+              value="{{email}}"
+              id="email"
+            />
+
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <label>Nombre</label>
+            <input id="nombre" class="form-control m-auto" value="{{nombre}}" />
+          </div>
+        {{!--   {{/each}} --}}
+          <div class="form-group col-12 col-sm-6">
+            <label>Password</label>
+            <input
+              id="password"
+              type="password"
+              class="form-control m-auto"
+              value="{{password}}"
+            />
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <label>Repita la password</label>
+            <input
+              id="passwordRepeat"
+              type="password"
+              class="form-control m-auto"
+              value="{{password}}"
+            />
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <label>Años de experiencia</label>
+            <input id="anos_experiencia" class="form-control m-auto" value="{{anos_experiencia}}" />
+          </div>
+          <div class="form-group col-12 col-sm-6">
+            <label>Especialidad</label>
+            <input id="especialidad" class="form-control m-auto" value="{{especialidad}}" />
+          </div>
+        </div>
+        <div class="mb-1">
+          <button class="btn btn-primary"  onclick="actualizarDatos()">Actualizar</button>
+        </div>
+        <div>
+          <button onclick="eliminarParticipante()"  class="btn btn-danger">Eliminar cuenta</button>
+        </div>
+        
+      </form>
+    </div>
+
+    <script>
+
+        const email = document.getElementById('email')
+        const nombre = document.getElementById('nombre')
+        const password = document.getElementById('password')   
+        const passwordRepeat = document.getElementById('passwordRepeat')   
+        const anos_experiencia= document.getElementById('anos_experiencia')    
+        const especialidad = document.getElementById('especialidad')    
+        //console.log(nombre)
+    
+    const actualizarDatos = async () => {
+         
+      if (password.value !== passwordRepeat.value) {
+        alert("las constraseñas no coinciden")
+      }else{
+            const payload = {
+              email: email.value,
+              nombre: nombre.value,
+              password: password.value,
+              anos_experiencia: anos_experiencia.value,
+              especialidad: especialidad.value,} 
+          try{
+            await axios.put('/actualizarDatos', payload)//const { data : token } =
+            .then(() => {
+              alert('Datos actualizados con éxito')
+              window.location.href = "/"
+
+            }) //localStorage.setItem('jwt-token', token)        
+          }catch (error) {
+            throw error
+          
+          }
+      }
+    }
+
+const eliminarParticipante = async () => {
+    try{
+        await axios.delete(`/eliminarDatos/${email.value}`)//const { data : token } = 
+      alert(`participante eliminado de la inscripción!`)
+      window.location.href = "/"
+      }
+      catch ({ response }) {
+      //console.log(response)
+      const {data} = response
+      const {error} = data
+      alert(error)
+      }
+}
+        
+    </script>
+
+
+  
+  
